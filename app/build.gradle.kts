@@ -35,8 +35,9 @@ android {
 }
 
 dependencies {
-    implementation("de.robv.android.xposed:api:82")
-    implementation("de.robv.android.xposed:api:82:sources")
+    // 使用 compileOnly，因为 API 在 Xposed 框架中已经提供，不需要打包进 APK
+    compileOnly("de.robv.android.xposed:api:82")
+    compileOnly("de.robv.android.xposed:api:82:sources")
     
     implementation("androidx.core:core:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
