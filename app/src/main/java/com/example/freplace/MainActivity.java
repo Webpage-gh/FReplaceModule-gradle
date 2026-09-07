@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 import java.io.File;
 import de.robv.android.xposed.XSharedPreferences;
 
@@ -34,6 +35,8 @@ public class MainActivity extends Activity {
                 prefs.edit().putString(KEY_REPLACE, edit.getText().toString()).apply();
                 // ★ 关键：写入之后立刻把文件设为 world-readable
                 makePrefsWorldReadable();
+                // 提示用户重启目标应用
+                Toast.makeText(MainActivity.this, "设置已保存，请重启目标应用使配置生效", Toast.LENGTH_LONG).show();
             }
         });
     }
