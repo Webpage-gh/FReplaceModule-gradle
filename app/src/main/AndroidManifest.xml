@@ -2,8 +2,7 @@
     package="com.example.freplace">
     <application
         android:allowBackup="false"
-        android:label="FReplaceModule"
-        android:icon="@mipmap/ic_launcher">
+        android:label="FReplaceModule">
         <activity android:name=".ConfigActivity"
             android:label="FReplace 设置"
             android:exported="true">
