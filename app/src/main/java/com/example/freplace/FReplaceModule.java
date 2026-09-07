@@ -4,23 +4,42 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class FReplaceModule implements IXposedHookLoadPackage {
     private static final String PREF_KEY = "replace_text";
+    private static final String PREFS_NAME = "freplace_prefs";
+    private static final String MODULE_PACKAGE = "com.example.freplace";
+    private XSharedPreferences xsp;
+
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        // 初始化 XSharedPreferences，使用正确的 SharedPreferences 名称
+        xsp = new XSharedPreferences(MODULE_PACKAGE, PREFS_NAME);
+        xsp.makeWorldReadable();
+
+        // 避免 Hook 自身应用
+        if (lpparam.packageName.equals(MODULE_PACKAGE)) {
+            return;
+        }
+
         XposedBridge.hookAllMethods(Activity.class, "onResume", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                 Activity activity = (Activity) param.thisObject;
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-                String replace = prefs.getString(PREF_KEY, "FFF");
+                
+                // 再次检查避免 Hook 自身应用的 Activity
+                if (activity.getPackageName().equals(MODULE_PACKAGE)) {
+                    return;
+                }
+
+                // 使用 XSharedPreferences 读取配置
+                xsp.reload();
+                String replace = xsp.getString(PREF_KEY, "FFF");
                 replaceAllText(activity.getWindow().getDecorView(), replace);
             }
         });
