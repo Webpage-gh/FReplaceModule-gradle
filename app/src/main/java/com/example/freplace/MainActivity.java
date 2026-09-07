@@ -8,12 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class ConfigActivity extends Activity {
+public class MainActivity extends Activity {
     private static final String KEY_REPLACE = "replace_text";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_config);
+        setContentView(R.layout.activity_main);
         final EditText edit = findViewById(R.id.edit_replace);
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         edit.setText(prefs.getString(KEY_REPLACE, "FFF"));
@@ -22,7 +22,7 @@ public class ConfigActivity extends Activity {
             @Override
             public void onClick(View v) {
                 prefs.edit().putString(KEY_REPLACE, edit.getText().toString()).apply();
-                finish();
+                // 保存后不退出，让用户可以继续修改
             }
         });
     }
