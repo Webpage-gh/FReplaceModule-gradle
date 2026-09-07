@@ -17,8 +17,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         final EditText edit = findViewById(R.id.edit_replace);
         
-        // 使用 MODE_WORLD_READABLE 以便 XSharedPreferences 可以读取
-        final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_WORLD_READABLE);
+        // 使用默认模式（MODE_PRIVATE），XSharedPreferences 会自动处理跨应用读取
+        final SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         edit.setText(prefs.getString(KEY_REPLACE, "FFF"));
         
         Button btn = findViewById(R.id.btn_save);
