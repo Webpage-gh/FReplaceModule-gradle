@@ -27,6 +27,27 @@ public class FReplaceModule implements IXposedHookLoadPackage {
             return;
         }
 
+        // Hook onCreate 用于首次打开时的文本替换
+        XposedBridge.hookAllMethods(Activity.class, "onCreate", new XC_MethodHook() {
+            @Override
+            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                Activity activity = (Activity) param.thisObject;
+                
+                // 再次检查避免 Hook 自身应用的 Activity
+                if (activity.getPackageName().equals(MODULE_PACKAGE)) {
+                    return;
+                }
+
+                // 使用 XSharedPreferences 读取配置
+                xsp.reload();
+                String replace = xsp.getString(PREF_KEY, "FFF");
+                // 使用 post 延迟执行，确保 contentView 已加载
+                activity.getWindow().getDecorView().post(() -> 
+                    replaceAllText(activity.getWindow().getDecorView(), replace));
+            }
+        });
+
+        // Hook onResume 用于返回页面时的刷新
         XposedBridge.hookAllMethods(Activity.class, "onResume", new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
