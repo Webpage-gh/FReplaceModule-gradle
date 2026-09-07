@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.freplace">
+    <application
+        android:allowBackup="false"
+        android:label="FReplaceModule"
+        android:icon="@mipmap/ic_launcher">
+        <activity android:name=".ConfigActivity"
+            android:label="FReplace 设置"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <meta-data android:name="xposedmodule" android:value="true" />
+        <meta-data android:name="xposeddescription" android:value="将所有 UI 文本替换为自定义文字（默认 FFF）" />
+    </application>
+</manifest>

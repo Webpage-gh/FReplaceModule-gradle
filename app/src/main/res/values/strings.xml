@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">FReplaceModule</string>
+    <string name="config_title">FReplace 设置</string>
+    <string name="enable_module">启用模块</string>
+    <string name="module_description">将所有 UI 文本替换为自定义文字（默认 FFF）</string>
+</resources>
